@@ -49,7 +49,7 @@ protected override async void OnInitialized()
 // Register in DI
 protected override void RegisterTypes(IContainerRegistry containerRegistry)
 {
-    containerRegistry.RegisterInstance(new ResourceManagersSource(AppResources.ResourceManager).Current);
+    containerRegistry.RegisterInstance(ResourceManagersSource.Init(AppResources.ResourceManager));
     containerRegistry.RegisterInstance(Plugin.Multilingual.CrossMultilingual.Current);
     containerRegistry.RegisterSingleton<ITranslationService, TranslationService>();
 

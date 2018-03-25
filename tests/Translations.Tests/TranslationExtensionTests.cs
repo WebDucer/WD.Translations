@@ -3,6 +3,7 @@ using System.Globalization;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using Translations.Tests.Mocks;
 using Translations.Tests.TestResources;
 using WD.Translations;
 using Xamarin.Forms.Xaml;
@@ -12,10 +13,16 @@ namespace Translations.Tests
     [TestFixture]
     public class TranslationExtensionTests
     {
-        [OneTimeSetUp]
-        public void InitSingletons()
+        [SetUp]
+        public void Init()
         {
-            new ResourceManagersSource(TestTranslations.ResourceManager);
+            ResourceManagersSource.Init(TestTranslations.ResourceManager);
+        }
+
+        [TearDown]
+        public void Cleanup()
+        {
+            TestResourceManagersSource.Reset();
         }
 
         [TestCase("en", "Value 1")]

@@ -16,44 +16,61 @@ namespace WD.Translations
         ///     Default contructor to initialize available resource managers
         /// </summary>
         /// <param name="resourcemanagers">Resource managers to initialize with</param>
-        public ResourceManagersSource(params ResourceManager[] resourcemanagers)
+        protected ResourceManagersSource(params ResourceManager[] resourcemanagers)
         {
-            if (Current != null)
-            {
-                throw new NotSupportedException("The custructor could be called only once");
-            }
-
             ResourceManagers = resourcemanagers;
-            Current = this;
         }
 
         /// <summary>
-        ///     Constructor for initialization with resource id and assembly
+        /// Initialize singleton instance
+        /// </summary>
+        /// <param name="resourcemanagers">Resource managers to initialize with</param>
+        /// <returns>Initialized instance</returns>
+        public static IResourceManagersSource Init(params ResourceManager[] resourcemanagers)
+        {
+            if (Current == null)
+            {
+                Current = new ResourceManagersSource(resourcemanagers);
+            }
+            else
+            {
+                throw new NotSupportedException("The initialization could be called only once");
+            }
+
+            return Current;
+        }
+
+        /// <summary>
+        /// Initialize singleton instance
         /// </summary>
         /// <param name="resourceId">Resource ID</param>
         /// <param name="assembly">Resource assembly</param>
-        public ResourceManagersSource(string resourceId, Assembly assembly) : this(new ResourceManager(resourceId, assembly))
+        /// <returns>Initialized instance</returns>
+        public static IResourceManagersSource Init(string resourceId, Assembly assembly)
         {
+            return Init(new ResourceManager(resourceId, assembly));
         }
 
         /// <summary>
-        ///     Constructor for initialization with more than one resource manager from ID
+        /// Initialize singleton instance
         /// </summary>
         /// <param name="resouceCollection">Collection of resource IDs and corresponding assemblies</param>
-        public ResourceManagersSource(Dictionary<string, Assembly> resouceCollection) : this(resouceCollection
-            .Select(s => new ResourceManager(s.Key, s.Value)).ToArray())
+        /// <returns>Initialized instance</returns>
+        public static IResourceManagersSource Init(Dictionary<string, Assembly> resouceCollection)
         {
+            return Init(resouceCollection
+                .Select(s => new ResourceManager(s.Key, s.Value)).ToArray());
         }
 
         /// <summary>
         /// Current singleton of resource managers source
         /// </summary>
-        public static IResourceManagersSource Current { get; private set; }
+        public static IResourceManagersSource Current { get; protected set; }
 
         #region Implementation of IResourceManagersSource
 
         /// <inheritdoc />
-        public ResourceManager[] ResourceManagers { get; }
+        public virtual ResourceManager[] ResourceManagers { get; }
 
         #endregion
     }
