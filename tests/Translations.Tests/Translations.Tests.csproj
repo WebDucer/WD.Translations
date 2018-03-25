@@ -46,6 +46,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TestTranslations.resx</DependentUpon>
     </Compile>
+    <Compile Include="TranslationExtensionTests.cs" />
     <Compile Include="TranslationServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +75,10 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Translations.Abstractions\Translations.Abstractions.csproj">
+      <Project>{f2a996ef-a3bf-40cc-bdaa-2344c31566d2}</Project>
+      <Name>Translations.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Translations\Translations.csproj">
       <Project>{48e0350f-5bff-43b1-9440-2c1605a29d85}</Project>
       <Name>Translations</Name>

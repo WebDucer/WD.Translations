@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using WD.Translations.Abstraction;
+using Plugin.Multilingual.Abstractions;
+using WD.Translations.Abstractions;
 
 namespace WD.Translations
 {
@@ -7,7 +8,7 @@ namespace WD.Translations
     public class TranslationService : ITranslationService
     {
         /// <inheritdoc />
-        public TranslationService(IResourceManagersSource resourceSource, IPlatformCultureInfo platformCulture)
+        public TranslationService(IResourceManagersSource resourceSource, IMultilingual platformCulture)
         {
             ResourceSource = resourceSource;
             PlatformCulture = platformCulture;
@@ -21,7 +22,7 @@ namespace WD.Translations
         /// <summary>
         ///     Platform cuture
         /// </summary>
-        public IPlatformCultureInfo PlatformCulture { get; }
+        public IMultilingual PlatformCulture { get; }
 
         /// <summary>
         ///     Format string to represent not translated value (default: '[_TranslationKey_]')
@@ -41,7 +42,7 @@ namespace WD.Translations
             }
 
             var translation = ResourceSource.ResourceManagers
-                .Select(s => s.GetString(translationKey, PlatformCulture.AppCulture))
+                .Select(s => s.GetString(translationKey, PlatformCulture.CurrentCultureInfo))
                 .FirstOrDefault(s => s != null);
 
             return translation;

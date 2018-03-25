@@ -50,6 +50,9 @@ protected override async void OnInitialized()
 protected override void RegisterTypes(IContainerRegistry containerRegistry)
 {
     containerRegistry.RegisterInstance(new ResourceManagersSource(AppResources.ResourceManager).Current);
+    containerRegistry.RegisterInstance(Plugin.Multilingual.CrossMultilingual.Current);
+    containerRegistry.RegisterSingleton<ITranslationService, TranslationService>();
+
     containerRegistry.RegisterForNavigation<NavigationPage>();
     containerRegistry.RegisterForNavigation<MainPage>();
 }
@@ -60,7 +63,7 @@ protected override void RegisterTypes(IContainerRegistry containerRegistry)
 ```xml
 ```
 
-## Usage in ViewModels
+### Usage in ViewModels
 
 ```csharp
 public MyVieModel(ITranslationService translationService)

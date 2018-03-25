@@ -2,9 +2,10 @@
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using Plugin.Multilingual.Abstractions;
 using Translations.Tests.TestResources;
 using WD.Translations;
-using WD.Translations.Abstraction;
+using WD.Translations.Abstractions;
 
 namespace Translations.Tests
 {
@@ -20,7 +21,7 @@ namespace Translations.Tests
             const string translationKey = "Value_1";
             var resourceSource =
                 Mock.Of<IResourceManagersSource>(s => s.ResourceManagers == new[] {TestTranslations.ResourceManager});
-            var platformCulture = Mock.Of<IPlatformCultureInfo>(s => s.AppCulture == new CultureInfo(culture));
+            var platformCulture = Mock.Of<IMultilingual>(s => s.CurrentCultureInfo == new CultureInfo(culture));
             var sut = new TranslationService(resourceSource, platformCulture);
 
             // Act
@@ -40,7 +41,7 @@ namespace Translations.Tests
             const string expected = "Value 2";
             var resourceSource =
                 Mock.Of<IResourceManagersSource>(s => s.ResourceManagers == new[] {TestTranslations.ResourceManager});
-            var platformCulture = Mock.Of<IPlatformCultureInfo>(s => s.AppCulture == new CultureInfo(culture));
+            var platformCulture = Mock.Of<IMultilingual>(s => s.CurrentCultureInfo== new CultureInfo(culture));
             var sut = new TranslationService(resourceSource, platformCulture);
 
             // Act
@@ -58,7 +59,7 @@ namespace Translations.Tests
             const string expected = "[_NO_KEY_]";
             var resourceSource =
                 Mock.Of<IResourceManagersSource>(s => s.ResourceManagers == new[] {TestTranslations.ResourceManager});
-            var platformCulture = Mock.Of<IPlatformCultureInfo>(s => s.AppCulture == new CultureInfo("en"));
+            var platformCulture = Mock.Of<IMultilingual>(s => s.CurrentCultureInfo== new CultureInfo("en"));
             var sut = new TranslationService(resourceSource, platformCulture);
 
             // Act
@@ -76,7 +77,7 @@ namespace Translations.Tests
             const string expected = "[_NO_KEY_]";
             var resourceSource =
                 Mock.Of<IResourceManagersSource>(s => s.ResourceManagers == new[] {TestTranslations.ResourceManager});
-            var platformCulture = Mock.Of<IPlatformCultureInfo>(s => s.AppCulture == new CultureInfo("en"));
+            var platformCulture = Mock.Of<IMultilingual>(s => s.CurrentCultureInfo== new CultureInfo("en"));
             var sut = new TranslationService(resourceSource, platformCulture);
 
             // Act
@@ -95,7 +96,7 @@ namespace Translations.Tests
             const string translationKey = "Value_1";
             var resourceSource =
                 Mock.Of<IResourceManagersSource>(s => s.ResourceManagers == new[] {TestTranslations.ResourceManager});
-            var platformCulture = Mock.Of<IPlatformCultureInfo>(s => s.AppCulture == new CultureInfo(culture));
+            var platformCulture = Mock.Of<IMultilingual>(s => s.CurrentCultureInfo== new CultureInfo(culture));
             var sut = new TranslationService(resourceSource, platformCulture);
 
             // Act
@@ -114,11 +115,11 @@ namespace Translations.Tests
             // Arrange
             var resourceSource =
                 Mock.Of<IResourceManagersSource>(s => s.ResourceManagers == new[] {TestTranslations.ResourceManager});
-            var platformCulture = Mock.Of<IPlatformCultureInfo>(s => s.AppCulture == new CultureInfo("en"));
+            var platformCulture = Mock.Of<IMultilingual>(s => s.CurrentCultureInfo== new CultureInfo("en"));
             var sut = new TranslationService(resourceSource, platformCulture);
 
             // Act
-            var result = sut.GetFormattedTranslation(key, 1);
+            var result = sut.GetTransalation(key);
 
             // Assert
             result.Should().Be(expected);
@@ -133,7 +134,7 @@ namespace Translations.Tests
             // Arrange
             var resourceSource =
                 Mock.Of<IResourceManagersSource>(s => s.ResourceManagers == new[] {TestTranslations.ResourceManager});
-            var platformCulture = Mock.Of<IPlatformCultureInfo>(s => s.AppCulture == new CultureInfo("en"));
+            var platformCulture = Mock.Of<IMultilingual>(s => s.CurrentCultureInfo== new CultureInfo("en"));
             var sut = new TranslationService(resourceSource, platformCulture);
 
             // Act
@@ -151,7 +152,7 @@ namespace Translations.Tests
             const string expected = "Value {0}";
             var resourceSource =
                 Mock.Of<IResourceManagersSource>(s => s.ResourceManagers == new[] {TestTranslations.ResourceManager});
-            var platformCulture = Mock.Of<IPlatformCultureInfo>(s => s.AppCulture == new CultureInfo("en"));
+            var platformCulture = Mock.Of<IMultilingual>(s => s.CurrentCultureInfo== new CultureInfo("en"));
             var sut = new TranslationService(resourceSource, platformCulture);
 
             // Act

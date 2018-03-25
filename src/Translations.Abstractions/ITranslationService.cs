@@ -1,4 +1,4 @@
-﻿namespace WD.Translations.Abstraction
+﻿namespace WD.Translations.Abstractions
 {
     /// <summary>
     ///     Service for translations in view models
