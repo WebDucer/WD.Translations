@@ -41,7 +41,7 @@ protected override async void OnInitialized()
 {
     InitializeComponent();
 
-    var resourceSource = new ResourceManagersSource(AppResources.ResourceManager).Current;
+    var resourceSource = ResourceManagersSource.Init(AppResources.ResourceManager;
 
     mainPage = new NavigationPage(new MainPage());
 }
