@@ -190,7 +190,7 @@ Task("_startSonarQube")
             Login = _sonarqubeApiToken,
             Url = _sonarqubeUri,
             Organization = Names.SONARQUBE_ORGANISATION,
-            //Branch = _version.BranchName.Replace("/","_")
+            Branch = _version.BranchName.Replace("/","_")
         };
 
         if(FileExists(Paths.TEST_COVERAGE_RESULT_FILE_HTML)) {
@@ -212,10 +212,49 @@ Task("_endSonarQube")
         SonarEnd(sonarSettings);
     });
 
+Task("_createNuGetAbstractionsPackage")
+    .Description("Create NuGet package of the libraray abstractions")
+    .Does(() => {
+        var netStandardTarget = @"lib\netstandard1.0";
+
+        var nugetSettings = new NuGetPackSettings {
+            Id = Names.PROJECT_ID_ABSTRACTIONS,
+            Version = _version.NuGetVersion,
+            Title = Names.PROJECT_TITLE_ABSTRACTIONS,
+            Authors = Names.PROJECT_AUTHORS,
+            Owners = Names.PROJECT_OWNERS,
+            Description = Names.PROJECT_DESCRIPTION_ABSTRACTIONS,
+            Summary = Names.PROJECT_DESCRIPTION_ABSTRACTIONS,
+            Copyright = Names.PROJECT_COPYRIGHTS,
+            Tags = Names.PROJECT_TAGS,
+            LicenseUrl = Paths.LICENSE_URL,
+            ProjectUrl = Paths.PROJECT_URL,
+            OutputDirectory = Paths.ARTIFACTS_OUTPUT,
+            BasePath = Paths.BUILD_OUTPUT,
+            Files = new [] {
+                new NuSpecContent {Source = Names.PROJECT_ID_ABSTRACTIONS + ".dll", Target = netStandardTarget},
+                new NuSpecContent {Source = Names.PROJECT_ID_ABSTRACTIONS + ".pdb", Target = netStandardTarget},
+                new NuSpecContent {Source = Names.PROJECT_ID_ABSTRACTIONS + ".xml", Target = netStandardTarget},
+            }
+        };
+
+        // Release notes
+        if(FileExists(Paths.RELEASE_NOTES_FILE)){
+            var releaseNote = ParseReleaseNotes(Paths.RELEASE_NOTES_FILE);
+            var notes = releaseNote.Notes.ToList();
+            notes.Insert(0, "# " + releaseNote.Version);
+            nugetSettings.ReleaseNotes = notes;
+        }
+
+        NuGetPack(nugetSettings);
+    });
+
 Task("_createNuGetPackage")
     .Description("Create NuGet package of the libraray")
     .Does(() => {
         var netStandardTarget = @"lib\netstandard2.0";
+        var dependencies = Paths.GetDependenciesFromProjectFile(Paths.PROJECT_FILE);
+        dependencies.Add(new NuSpecDependency { Id = Names.PROJECT_ID_ABSTRACTIONS, Version = _version.NuGetVersion });
 
         var nugetSettings = new NuGetPackSettings {
             Id = Names.PROJECT_ID,
@@ -235,7 +274,8 @@ Task("_createNuGetPackage")
                 new NuSpecContent {Source = Names.PROJECT_ID + ".dll", Target = netStandardTarget},
                 new NuSpecContent {Source = Names.PROJECT_ID + ".pdb", Target = netStandardTarget},
                 new NuSpecContent {Source = Names.PROJECT_ID + ".xml", Target = netStandardTarget},
-            }
+            },
+            Dependencies = dependencies.ToArray()
         };
 
         // Release notes
@@ -283,6 +323,7 @@ Task("BuildAndPackLibrary")
     .IsDependentOn("_restore")
     .IsDependentOn("_fixVersion")
     .IsDependentOn("_buildLibraries")
+    .IsDependentOn("_createNuGetAbstractionsPackage")
     .IsDependentOn("_createNuGetPackage");
 
 Task("DeployLibrary")
