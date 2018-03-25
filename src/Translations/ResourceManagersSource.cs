@@ -16,7 +16,7 @@ namespace WD.Translations
         ///     Default contructor to initialize available resource managers
         /// </summary>
         /// <param name="resourcemanagers">Resource managers to initialize with</param>
-        public ResourceManagersSource(ResourceManager[] resourcemanagers)
+        public ResourceManagersSource(params ResourceManager[] resourcemanagers)
         {
             if (Current != null)
             {
@@ -32,8 +32,7 @@ namespace WD.Translations
         /// </summary>
         /// <param name="resourceId">Resource ID</param>
         /// <param name="assembly">Resource assembly</param>
-        public ResourceManagersSource(string resourceId, Assembly assembly) : this(new[]
-            {new ResourceManager(resourceId, assembly)})
+        public ResourceManagersSource(string resourceId, Assembly assembly) : this(new ResourceManager(resourceId, assembly))
         {
         }
 

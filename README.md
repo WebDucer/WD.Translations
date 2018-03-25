@@ -21,6 +21,55 @@ Library with an Service to get and set the current application languge and to ge
 
 ## Services
 
-- `IPlatformCultureInfo` - Inteface to get the culture information from the running platform (current app culture and OS culture)
-- `TranslationExtension` - XAML extension for translations
-- `ITranslationService` - Translation service to be used in view models over dependency injection
+- Abstractions:
+  - `IPlatformCultureInfo` - Inteface to get the culture information from the running platform (current app culture and OS culture)
+  - `IResourceManagersSource` - Interface for the resources source singleton to use in DI
+  - `ITranslationService` - Translation service to be used in view models over dependency injection
+- Implementations
+  - `TranslationExtension` - XAML extension for translations
+  - `TranslationService` - Implementation for translation service interface (uses `IResourceManagerSource` ans `IPlatformCultureInfo`)
+
+## Sample
+
+Init `ResourceManagersSource` in your `App.xaml.cs` to be able to use this in XAML and code. Register as **Singleton** or **Instance** in your depency injection framework, if you use one. Register `
+
+### App.caml.cs
+
+```csproj
+// Create Singleton (without DI)
+protected override async void OnInitialized()
+{
+    InitializeComponent();
+
+    var resourceSource = new ResourceManagersSource(AppResources.ResourceManager).Current;
+
+    mainPage = new NavigationPage(new MainPage());
+}
+
+// Register in DI
+protected override void RegisterTypes(IContainerRegistry containerRegistry)
+{
+    containerRegistry.RegisterInstance(new ResourceManagersSource(AppResources.ResourceManager).Current);
+    containerRegistry.RegisterForNavigation<NavigationPage>();
+    containerRegistry.RegisterForNavigation<MainPage>();
+}
+```
+
+### Usage in XAML-Files
+
+```xml
+```
+
+## Usage in ViewModels
+
+```csharp
+public MyVieModel(ITranslationService translationService)
+{
+  _translServ = translationService;
+}
+
+public string Title
+{
+  get { return _translServ.Translate("PAGE_TITLE"); }
+}
+```

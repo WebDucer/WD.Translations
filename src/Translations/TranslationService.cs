@@ -35,7 +35,7 @@ namespace WD.Translations
         /// <returns>translated value or NULL</returns>
         protected virtual string GetBaseTranslation(string translationKey)
         {
-            if (string.IsNullOrEmpty(translationKey))
+            if (string.IsNullOrWhiteSpace(translationKey))
             {
                 return null;
             }
