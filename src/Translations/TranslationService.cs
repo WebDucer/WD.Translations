@@ -51,7 +51,7 @@ namespace WD.Translations
         #region Implementation of ITranslationService
 
         /// <inheritdoc />
-        public virtual string GetTransalation(string translationKey)
+        public virtual string GetTranslation(string translationKey)
         {
             return GetBaseTranslation(translationKey) ?? string.Format(NotFoundFormatString, translationKey);
         }

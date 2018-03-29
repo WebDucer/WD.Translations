@@ -10,7 +10,7 @@
         /// </summary>
         /// <param name="translationKey">Translation key</param>
         /// <returns>Translated value</returns>
-        string GetTransalation(string translationKey);
+        string GetTranslation(string translationKey);
 
         /// <summary>
         /// </summary>

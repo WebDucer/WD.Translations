@@ -16,7 +16,7 @@ namespace Translations.Tests
         [SetUp]
         public void Init()
         {
-            ResourceManagersSource.Init(TestTranslations.ResourceManager);
+            ResourceManagersSource.Init(true, TestTranslations.ResourceManager);
         }
 
         [TearDown]

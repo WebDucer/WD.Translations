@@ -28,18 +28,30 @@ namespace Translations.Tests
         public void Init_CalledTwice_Throws()
         {
             // Arrange
-            var sut = ResourceManagersSource.Init(TestTranslations.ResourceManager);
-            var sutAction = new Action(() => ResourceManagersSource.Init(TestTranslations.ResourceManager));
+            var sut = ResourceManagersSource.Init(true, TestTranslations.ResourceManager);
+            var sutAction = new Action(() => ResourceManagersSource.Init(true, TestTranslations.ResourceManager));
 
             // Act // Assert
             sutAction.Should().ThrowExactly<NotSupportedException>();
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Init_CalledTwice_ThrowDeactivated_NotThrows(bool firstCall)
+        {
+            // Arrange
+            var sut = ResourceManagersSource.Init(firstCall, TestTranslations.ResourceManager);
+            var sutAction = new Action(() => ResourceManagersSource.Init(false, TestTranslations.ResourceManager));
+
+            // Act // Assert
+            sutAction.Should().NotThrow();
         }
 
         [Test]
         public void Init_WithResourceManager()
         {
             // Arrange / Act
-            var sut = ResourceManagersSource.Init(TestTranslations.ResourceManager);
+            var sut = ResourceManagersSource.Init(true, TestTranslations.ResourceManager);
 
             // Assert
             sut.ResourceManagers.Length.Should().Be(1);
