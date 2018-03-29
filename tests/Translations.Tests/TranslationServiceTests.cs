@@ -25,7 +25,7 @@ namespace Translations.Tests
             var sut = new TranslationService(resourceSource, platformCulture);
 
             // Act
-            var result = sut.GetTransalation(translationKey);
+            var result = sut.GetTranslation(translationKey);
 
             // Assert
             result.Should().Be(expected);
@@ -45,7 +45,7 @@ namespace Translations.Tests
             var sut = new TranslationService(resourceSource, platformCulture);
 
             // Act
-            var result = sut.GetTransalation(translationKey);
+            var result = sut.GetTranslation(translationKey);
 
             // Assert
             result.Should().Be(expected);
@@ -63,7 +63,7 @@ namespace Translations.Tests
             var sut = new TranslationService(resourceSource, platformCulture);
 
             // Act
-            var result = sut.GetTransalation(translationKey);
+            var result = sut.GetTranslation(translationKey);
 
             // Assert
             result.Should().Be(expected);
@@ -119,7 +119,7 @@ namespace Translations.Tests
             var sut = new TranslationService(resourceSource, platformCulture);
 
             // Act
-            var result = sut.GetTransalation(key);
+            var result = sut.GetTranslation(key);
 
             // Assert
             result.Should().Be(expected);
