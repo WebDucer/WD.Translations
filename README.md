@@ -4,30 +4,22 @@ Library with an Service to get and set the current application languge and to ge
 
 ## States
 
-| Service | Current Status |
-| :------ | -------------: |
-| AppVeyor last | [![Build status last](https://ci.appveyor.com/api/projects/status/i0rx89ds0nsp8yhx?svg=true)](https://ci.appveyor.com/project/WebDucer/wd-translations) |
-| AppVeyor develop | [![Build status develop](https://ci.appveyor.com/api/projects/status/i0rx89ds0nsp8yhx/branch/develop?svg=true)](https://ci.appveyor.com/project/WebDucer/wd-translations/branch/develop) |
-| AppVeyor master | [![Build status master](https://ci.appveyor.com/api/projects/status/i0rx89ds0nsp8yhx/branch/master?svg=true)](https://ci.appveyor.com/project/WebDucer/wd-translations/branch/master) |
-| SonarCube coverage - master | [![SonarQube Coverage](https://sonarcloud.io/api/project_badges/measure?project=WD.Translations&metric=coverage)](https://sonarcloud.io/dashboard?id=WD.Translations) |
-| SonarCube technical debt - master | [![SonarQube Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=WD.Translations&metric=sqale_index)](https://sonarcloud.io/dashboard?id=WD.Translations) |
-| SonarCube Quality Gate - master | [![SonarQube Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=WD.Translations&metric=alert_status)](https://sonarcloud.io/dashboard?id=WD.Translations) |
-| SonarCube coverage - develop | [![SonarQube Coverage](https://sonarcloud.io/api/project_badges/measure?branch=develop&project=WD.Translations&metric=coverage)](https://sonarcloud.io/dashboard?branch=develop&id=WD.Translations) |
-| SonarCube technical debt - develop | [![SonarQube Technical Debt](https://sonarcloud.io/api/project_badges/measure?branch=develop&project=WD.Translations&metric=sqale_index)](https://sonarcloud.io/dashboard?branch=develop&id=WD.Translations) |
-| SonarCube Quality Gate - develop | [![SonarQube Quality Gate](https://sonarcloud.io/api/project_badges/measure?branch=develop&project=WD.Translations&metric=alert_status)](https://sonarcloud.io/dashboard?branch=develop&id=WD.Translations) |
-| NuGet stable | [![NuGet](https://img.shields.io/nuget/v/WD.Translations.svg)](https://www.nuget.org/packages/WD.Translations) |
-| NuGet pre | [![NuGet Pre Release](https://img.shields.io/nuget/vpre/WD.Translations.svg)](https://www.nuget.org/packages/WD.Translations) |
-| NuGet downloads | [![NuGet](https://img.shields.io/nuget/dt/WD.Translations.svg)](https://www.nuget.org/packages/WD.Translations) |
+| Service | Last | Develop | Master |
+| :------ | ---: | ------: | -----: |
+| AppVeyor | [![Build status last](https://ci.appveyor.com/api/projects/status/i0rx89ds0nsp8yhx?svg=true)](https://ci.appveyor.com/project/WebDucer/wd-translations) | [![Build status develop](https://ci.appveyor.com/api/projects/status/i0rx89ds0nsp8yhx/branch/develop?svg=true)](https://ci.appveyor.com/project/WebDucer/wd-translations/branch/develop) | [![Build status master](https://ci.appveyor.com/api/projects/status/i0rx89ds0nsp8yhx/branch/master?svg=true)](https://ci.appveyor.com/project/WebDucer/wd-translations/branch/master) |
+| SonarQube coverage | | [![SonarQube Coverage](https://sonarcloud.io/api/project_badges/measure?branch=develop&project=WD.Translations&metric=coverage)](https://sonarcloud.io/dashboard?branch=develop&id=WD.Translations) | [![SonarQube Coverage](https://sonarcloud.io/api/project_badges/measure?project=WD.Translations&metric=coverage)](https://sonarcloud.io/dashboard?id=WD.Translations) |
+| SonarQube technical debt | | [![SonarQube Technical Debt](https://sonarcloud.io/api/project_badges/measure?branch=develop&project=WD.Translations&metric=sqale_index)](https://sonarcloud.io/dashboard?branch=develop&id=WD.Translations) | [![SonarQube Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=WD.Translations&metric=sqale_index)](https://sonarcloud.io/dashboard?id=WD.Translations) |
+| SonarQube quality gate | | [![SonarQube Quality Gate](https://sonarcloud.io/api/project_badges/measure?branch=develop&project=WD.Translations&metric=alert_status)](https://sonarcloud.io/dashboard?branch=develop&id=WD.Translations) | [![SonarQube Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=WD.Translations&metric=alert_status)](https://sonarcloud.io/dashboard?id=WD.Translations) |
+| Nuget | [![NuGet](https://img.shields.io/nuget/dt/WD.Translations.svg)](https://www.nuget.org/packages/WD.Translations) | [![NuGet Pre Release](https://img.shields.io/nuget/vpre/WD.Translations.svg)](https://www.nuget.org/packages/WD.Translations) | [![NuGet](https://img.shields.io/nuget/v/WD.Translations.svg)](https://www.nuget.org/packages/WD.Translations) |
 
 ## Services
 
 - Abstractions:
-  - `IPlatformCultureInfo` - Inteface to get the culture information from the running platform (current app culture and OS culture)
   - `IResourceManagersSource` - Interface for the resources source singleton to use in DI
   - `ITranslationService` - Translation service to be used in view models over dependency injection
 - Implementations
   - `TranslationExtension` - XAML extension for translations
-  - `TranslationService` - Implementation for translation service interface (uses `IResourceManagerSource` ans `IPlatformCultureInfo`)
+  - `TranslationService` - Implementation for translation service interface (uses `IResourceManagerSource` and `IMultilingual` from [Plugin.Multilingual](https://github.com/CrossGeeks/MultilingualPlugin))
 
 ## Sample
 
@@ -35,13 +27,13 @@ Init `ResourceManagersSource` in your `App.xaml.cs` to be able to use this in XA
 
 ### App.caml.cs
 
-```csproj
+```csharp
 // Create Singleton (without DI)
 protected override async void OnInitialized()
 {
     InitializeComponent();
 
-    var resourceSource = ResourceManagersSource.Init(AppResources.ResourceManager;
+    var resourceSource = ResourceManagersSource.Init(AppResources.ResourceManager);
 
     mainPage = new NavigationPage(new MainPage());
 }
@@ -61,6 +53,16 @@ protected override void RegisterTypes(IContainerRegistry containerRegistry)
 ### Usage in XAML-Files
 
 ```xml
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:i18N="clr-namespace:WD.Translations;assembly=WD.Translations"
+             Title="{i18N:Translation PAGE_TITLE}">
+  <ContentPage.Content>
+    <Label Text="{i18N:Translation HELLO_WORLD}"/>
+  </ContentPage.Content>
+</ContentPage>
 ```
 
 ### Usage in ViewModels
@@ -73,6 +75,15 @@ public MyVieModel(ITranslationService translationService)
 
 public string Title
 {
-  get { return _translServ.Translate("PAGE_TITLE"); }
+  get { return _translServ.GetTransalation("PAGE_TITLE"); }
+}
+
+public void SomeMethod()
+{
+  // Translation e.g: "Value have to be between {0} and {1}."
+  var validator = new Validator
+  {
+    _translServ.GetFormattedTranslation("VALIDATION_ERROR_MESSAGE", 0, 500)
+  };
 }
 ```

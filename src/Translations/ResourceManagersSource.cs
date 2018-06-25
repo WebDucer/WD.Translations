@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using System.Threading;
 using WD.Translations.Abstractions;
 
 namespace WD.Translations
