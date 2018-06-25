@@ -23,7 +23,7 @@ Library with an Service to get and set the current application languge and to ge
 
 ## Sample
 
-Init `ResourceManagersSource` in your `App.xaml.cs` to be able to use this in XAML and code. Register as **Singleton** or **Instance** in your depency injection framework, if you use one. Register `
+Init `ResourceManagersSource` in your `App.xaml.cs` to be able to use this in XAML and code. Register as **Singleton** or **Instance** in your depency injection framework, if you use one. You can register as much of resource managers as you need. The first found translation will be taken. So you can override _common library_ translation with your own, if you register your manager as first.
 
 ### App.caml.cs
 
@@ -33,7 +33,9 @@ protected override async void OnInitialized()
 {
     InitializeComponent();
 
-    var resourceSource = ResourceManagersSource.Init(AppResources.ResourceManager);
+    var resourceSource = ResourceManagersSource.Init(
+      AppResources.ResourceManager,
+      CommonTranslations.ResourceManager); // Add your collection
 
     mainPage = new NavigationPage(new MainPage());
 }
@@ -41,7 +43,9 @@ protected override async void OnInitialized()
 // Register in DI
 protected override void RegisterTypes(IContainerRegistry containerRegistry)
 {
-    containerRegistry.RegisterInstance(ResourceManagersSource.Init(AppResources.ResourceManager));
+    containerRegistry.RegisterInstance(ResourceManagersSource.Init(
+      AppResources.ResourceManager,
+      CommonTranslations.ResourceManager)); // Add your collection of sources
     containerRegistry.RegisterInstance(Plugin.Multilingual.CrossMultilingual.Current);
     containerRegistry.RegisterSingleton<ITranslationService, TranslationService>();
 
